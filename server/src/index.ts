@@ -10,7 +10,10 @@ type Binding = {
 }
 
 const app = new Hono<{
-  Bindings:Binding
+  Bindings:Binding,
+  Variables:{
+    userId: string
+  }
 }>()
 
 // const dburl = process.env.DATABASE_URL can't use here.
@@ -18,13 +21,13 @@ const app = new Hono<{
 app.use('/api/v1/blog/*',async (c,next)=>{
   const header = c.req.header("authorization") || ""
   const token = header.split(" ")[1]
-  const verification = await verify(token, c.env.JWT_Secret)
-  if(verification.id){
-    await next()
-  }
-  else{
+  const verification = await verify(token, c.env.JWT_Secret) as {id:string}
+  if(!verification){
+    c.status(401)
     return c.json({msg:"Unauthorized"})
   }
+  c.set('userId', verification.id)
+  await next()
 })
 
 app.post('/api/v1/signup',async (c)=>{
@@ -89,7 +92,7 @@ app.post('/api/v1/signin',async (c)=>{
 })
 
 app.post('/api/v1/blog/post',(c)=>{
-  return c.text('hello')
+  return c.json({msg:c.get('userId')})
 })
 
 app.put('/api/v1/blog/update',(c)=>{
