@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import {decode, verify, sign} from 'hono/jwt'
 import bcrypt from 'bcryptjs'
+import { cors } from 'hono/cors'
+import {signUpInput, signInInput} from '../../common/dist/index'
 
 type Binding = {
   DATABASE_URL: string,
@@ -18,7 +20,9 @@ const app = new Hono<{
 
 // const dburl = process.env.DATABASE_URL can't use here.
 
-app.use('/api/v1/blog/*',async (c,next)=>{
+app.use(cors())
+
+app.use('/api/v1/blog/*',async (c,next)=>{       //middleware for authentication
   const header = c.req.header("authorization") || ""
   const token = header.split(" ")[1]
   const verification = await verify(token, c.env.JWT_Secret) as {id:string}
@@ -36,6 +40,11 @@ app.post('/api/v1/signup',async (c)=>{
   }).$extends(withAccelerate())
         try{const body = await c.req.json()
         
+          const {success} = signUpInput.safeParse(body)
+            if (!success){
+              c.status(404)
+              return c.json({msg:"Invalid Input"})
+            }
           const check = await prisma.user.findUnique({
             where:{
               email: body.email
@@ -68,6 +77,12 @@ app.post('/api/v1/signin',async (c)=>{
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
       try{const body = await c.req.json()
+
+        const {success} = signInInput.safeParse(body)
+          if (!success){
+            c.status(404)
+            return c.json({msg:"Invalid Input"})
+          }
 
         const check = await prisma.user.findUnique({
           where:{
