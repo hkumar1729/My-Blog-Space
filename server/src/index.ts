@@ -4,7 +4,7 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import {decode, verify, sign} from 'hono/jwt'
 import bcrypt from 'bcryptjs'
 import { cors } from 'hono/cors'
-import {signUpInput, signInInput} from '../../common/dist/index'
+import {signUpInput, signInInput, blogParam, blogInput} from '../../common/dist/index'
 
 type Binding = {
   DATABASE_URL: string,
@@ -23,15 +23,19 @@ const app = new Hono<{
 app.use(cors())
 
 app.use('/api/v1/blog/*',async (c,next)=>{       //middleware for authentication
-  const header = c.req.header("authorization") || ""
+  try{const header = c.req.header("authorization") || ""
   const token = header.split(" ")[1]
   const verification = await verify(token, c.env.JWT_Secret) as {id:string}
   if(!verification){
     c.status(401)
-    return c.json({msg:"Unauthorized"})
+    return c.json({msg:"You are not logged in"})
   }
   c.set('userId', verification.id)
-  await next()
+  await next()}
+  catch(e){
+    c.status(403);
+    return c.json({msg:"Not Authorised"})
+  }
 })
 
 app.post('/api/v1/signup',async (c)=>{
@@ -101,21 +105,67 @@ app.post('/api/v1/signin',async (c)=>{
         return c.json({token, msg:'Successfully Logged In'})}
     
     catch{
+      c.status(403)
       return c.json({msg:'Error in signin try again'})
     }
   
 })
 
-app.post('/api/v1/blog/post',(c)=>{
-  return c.json({msg:c.get('userId')})
+app.post('/api/v1/blog/post',async (c)=>{
+  try{const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const body =await c.req.json()
+  const {success} = blogInput.safeParse(body)
+    if(!success){
+    c.status(404)
+    return c.json({msg:"Invalid Input"})
+  }
+  const id = c.get('userId')
+
+  const create = await prisma.blog.create({
+    data:{
+      title: body.title,
+      content:body.content,
+      publishDate:body.publishDate,
+      authorId: c.get("userId")
+
+    }
+  })
+  return c.json({msg:"Blog Posted successfully"})}
+  catch(e){
+    c.status(403)
+    return c.json({msg:"Something wrong try again later"})
+  }
+
 })
 
 app.put('/api/v1/blog/update',(c)=>{
-  return c.text('hello')
+  const id = c.get('userId')
+  return c.json(id)
 })
 
-app.get('/api/v1/blogg',(c)=>{
-  return c.text('hello')
+app.get('/api/v1/blog/bulk',async (c)=>{
+  try{const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const post = await prisma.blog.findMany({
+    select:{
+      content:true,
+      title:true,
+      id:true,
+      author:{
+        select:{
+          name:true
+        }
+      }
+    }
+  })
+  return c.json({post})}
+  catch(e){
+    c.status(403)
+    return c.json({msg:"Please try again"})
+  }
 })
 
 export default app
