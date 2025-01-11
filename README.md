@@ -19,9 +19,10 @@ Welcome to **My Blog Space**! This application allows users to **read, publish b
   - React
   - React Hooks
   - Client-side routing with React Router
+  - Axios to make HTTP requests to hit the server.
   - Suspense for data fetching
 - **Backend**:
-  - Express.js (using **Hono** library for deploying on Cloudflare Workers)
+  - Express.js (using **Hono** library)
   - Prisma ORM for SQL database interaction
   - CORS for handling cross-origin requests
   - Cloudflare Worker environment for backend deployment
