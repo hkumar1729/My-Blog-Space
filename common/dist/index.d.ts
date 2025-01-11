@@ -47,5 +47,5 @@ export declare const Update: z.ZodObject<{
 }>;
 export type signInParam = z.infer<typeof signInInput>;
 export type signUpParam = z.infer<typeof signUpInput>;
-export type blogParam = z.infer<typeof signInInput>;
-export type updateParam = z.infer<typeof signUpInput>;
+export type blogParam = z.infer<typeof blogInput>;
+export type updateParam = z.infer<typeof Update>;
