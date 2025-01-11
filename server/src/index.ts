@@ -154,6 +154,7 @@ app.get('/api/v1/blog/bulk',async (c)=>{
       content:true,
       title:true,
       id:true,
+      publishDate:true,
       author:{
         select:{
           name:true
