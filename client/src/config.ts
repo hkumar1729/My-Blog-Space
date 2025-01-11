@@ -1,0 +1,1 @@
+export const BACKEND_URL:string = `https://server.harshk1729.workers.dev`
