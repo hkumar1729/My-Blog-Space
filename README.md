@@ -1,6 +1,6 @@
 # My Blog Space
 
-Welcome to **My Blog Space**! This application allows users to **read, publish blogs**, and **create accounts**. The frontend is built with **React**, while the backend uses **Express** and is deployed on **Cloudflare Workers**. The app supports full CRUD operations for blog posts and includes features like account creation, client-side routing, and more.
+Welcome to **My Blog Space**! This application allows users to **read, publish blogs**, and **create accounts**. The frontend is built with **React**, while the backend uses **Express using Hono library** and is deployed on **Cloudflare Workers**. The app supports full CRUD operations for blog posts and includes features like account creation, client-side routing, and more.
 
 ## Features
 
@@ -19,27 +19,28 @@ Welcome to **My Blog Space**! This application allows users to **read, publish b
   - React
   - React Hooks
   - Client-side routing with React Router
-  - Axios to make HTTP requests to hit the server.
   - Suspense for data fetching
+  - Axios for making HTTP request to hit the server
 - **Backend**:
   - Express.js (using **Hono** library)
   - Prisma ORM for SQL database interaction
   - CORS for handling cross-origin requests
   - Cloudflare Worker environment for backend deployment
   - Schema validation with a custom package
-  
+  - **Database Connection Pooling**: Prisma Accelerate is used to improve database connection efficiency, ensuring optimal performance for database operations.
+
 ## Setup and Installation
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js installed locally
 - npm (Node Package Manager)
 
 ### Steps to Run the Application
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/yourusername/my-blog-space.git
+    git clone https://github.com/harshk1729/My-Blog-Space.git
     cd my-blog-space
     ```
 
@@ -53,18 +54,19 @@ Welcome to **My Blog Space**! This application allows users to **read, publish b
         npm run dev
         ```
 
-    The frontend will run on `http://localhost:5173/`.
-    No need to run backend locally, already deployed in cloudflare worker.
+
+    The frontend will run on `http://localhost:5173/`. No need to run server locally, it is already deployed on cloudflare worker.
 
 ### How to Use
 
 1. **Create an Account**: Register and create a new account with your username and password.
 2. **Login**: Use your credentials to log in and start publishing blogs.
 3. **Publish Blogs**: Once logged in, you can publish new blog posts and view your previously published content.
-4. **Read Blogs**: Explore and read blogs published by other users in the platform.
+4. **Read blogs**: You can read blogs published by other users.
 
 ### Deployment
 
 The application is deployed using Cloudflare Workers. The backend is managed in a serverless environment, which scales as needed.
 
+- **Database Connection Pooling**: Prisma Accelerate is used to improve database connection efficiency, reducing the overhead of establishing new connections and enhancing scalability.
 
