@@ -25,7 +25,7 @@ export default function Signup(){
                 const token = response.data.token
                 alert(response.data.msg)
                 localStorage.setItem("token", `Bearer ${token}`)
-                navigate('/blog')
+                navigate('/blogs')
             }
         }catch(e:any){
             alert(e.response.data.msg)

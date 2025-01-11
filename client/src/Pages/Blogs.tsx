@@ -3,6 +3,7 @@ import {Appbar} from '../Components/Appbar'
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 
 type Author = {
@@ -19,15 +20,22 @@ interface post {
 
 export default function Blogs(){
     const [post, newPost] = useState<post[]>([])
+    const navigate = useNavigate()
+    
     useEffect(()=>{
-        axios.get(`${BACKEND_URL}/api/v1/blog/bulk`,{
-            headers:{
-                Authorization: localStorage.getItem('token')
-            }
-        }).then((resolve)=>{
-            newPost(resolve.data.post)
-        })
-    },[post])
+        if(localStorage.getItem('token')){
+            axios.get(`${BACKEND_URL}/api/v1/blog/bulk`,{
+                headers:{
+                    Authorization: localStorage.getItem('token')
+                }
+            }).then((resolve)=>{
+                newPost(resolve.data.post)
+            })
+        }
+        else{
+            navigate('../signin')
+        }
+    },[])
 
 
     return <div>
