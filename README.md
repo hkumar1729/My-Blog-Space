@@ -53,13 +53,6 @@ Welcome to **My Blog Space**! This application allows users to **read, publish b
         npm run dev
         ```
 
-    - For the backend:
-        ```bash
-        cd server
-        npm install
-        npm run dev
-        ```
-
     The frontend will run on `http://localhost:5173/`.
     No need to run backend locally, already deployed in cloudflare worker.
 
