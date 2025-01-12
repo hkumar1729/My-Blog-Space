@@ -38,9 +38,9 @@ export default function Signup(){
         <div className="flex flex-col justify-center items-center px-32">
             <Heading label={'Create an Account'}/>
             <Subheading l1={'Already have an account?'} l2={'Login'} to={'/signin'}/>
-            <Inputfield onchange={(e)=>{setInputs(c=>({...c, name:e.target.value}))}} label={'Your Name'} placeholder={'John'} type={'text'}/>
-            <Inputfield onchange={(e)=>{setInputs(c=>({...c, email:e.target.value}))}} label={'Email'} placeholder={'John@gmail.com'} type={'text'}/>
-            <Inputfield onchange={(e)=>{setInputs(c=>({...c, password:e.target.value}))}} label={'Password'} placeholder={'•••••••••'} type={'password'}/>
+            <Inputfield onchange={(e)=>{setInputs((c:signUpParam)=>({...c, name:e.target.value}))}} label={'Your Name'} placeholder={'John'} type={'text'}/>
+            <Inputfield onchange={(e)=>{setInputs((c:signUpParam)=>({...c, email:e.target.value}))}} label={'Email'} placeholder={'John@gmail.com'} type={'text'}/>
+            <Inputfield onchange={(e)=>{setInputs((c:signUpParam)=>({...c, password:e.target.value}))}} label={'Password'} placeholder={'•••••••••'} type={'password'}/>
             <Button onclick={sendRequest} label={'Sign Up'}/>
         </div>
         <div className="hidden md:block">

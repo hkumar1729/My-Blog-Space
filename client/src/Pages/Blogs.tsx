@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { Box, CircularProgress, Typography } from "@mui/material";
+
 
 
 type Author = {
@@ -20,6 +22,7 @@ interface post {
 
 export default function Blogs(){
     const [post, newPost] = useState<post[]>([])
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     
     useEffect(()=>{
@@ -30,12 +33,45 @@ export default function Blogs(){
                 }
             }).then((resolve)=>{
                 newPost(resolve.data.post)
+                setLoading(false)
             })
         }
         else{
             navigate('../signin')
         }
     },[])
+    if (loading) {
+        return (
+            <div>
+                <Appbar />
+                <Box
+                    sx={{
+                        position: "fixed",
+                        top: "64px",
+                        left: 0,
+                        width: "100%",
+                        height: "calc(100vh - 64px)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#f5f5f5",
+                        zIndex: 1000,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            textAlign: "center",
+                        }}
+                    >
+                        <CircularProgress />
+                        <Typography sx={{ mt: 2, color: "text.secondary" }}>
+                            Loading content...
+                        </Typography>
+                    </Box>
+                </Box>
+            </div>
+        );
+    }
 
 
     return <div>

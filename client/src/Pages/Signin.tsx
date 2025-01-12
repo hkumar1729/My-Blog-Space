@@ -38,8 +38,8 @@ export default function Signup(){
         <div className="flex flex-col justify-center items-center">
             <Heading label={'Enter your credentials'}/>
             <Subheading l1={"Don't have an account? "} l2={'Sign Up'} to={'/signup'}/>
-            <Inputfield onchange={(e)=>{setInputs(c=>({...c, email:e.target.value}))}} label={'Email'} placeholder={'John@gmail.com'} type={'text'}/>
-            <Inputfield onchange={(e)=>{setInputs(c=>({...c, password:e.target.value}))}} label={'Password'} placeholder={'•••••••••'} type={'password'}/>
+            <Inputfield onchange={(e)=>{setInputs((c:signInParam)=>({...c, email:e.target.value}))}} label={'Email'} placeholder={'John@gmail.com'} type={'text'}/>
+            <Inputfield onchange={(e)=>{setInputs((c:signInParam)=>({...c, password:e.target.value}))}} label={'Password'} placeholder={'•••••••••'} type={'password'}/>
             <Button onclick={sendRequest} label={'Sign In'}/>
         </div>
         <div className="hidden md:block">
