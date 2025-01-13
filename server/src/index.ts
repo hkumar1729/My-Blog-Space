@@ -18,9 +18,10 @@ const app = new Hono<{
   }
 }>()
 
+
 app.use(cors())
 
-app.use('/api/v1/blog/*',async (c,next)=>{
+app.use('/api/v1/blog/*',async (c,next)=>{ 
   try{const header = c.req.header("authorization") || ""
   const token = header.split(" ")[1]
   const verification = await verify(token, c.env.JWT_Secret) as {id:string}
@@ -41,7 +42,6 @@ app.post('/api/v1/signup',async (c)=>{
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
         try{const body = await c.req.json()
-            console.log(body)
         
           const {success} = signUpInput.safeParse(body)
             if (!success){
@@ -101,7 +101,7 @@ app.post('/api/v1/signin',async (c)=>{
           return c.json({msg:"Incorrect password"})
         }
         const token = await sign({id: check.id}, c.env.JWT_Secret)
-        return c.json({token, msg:'Successfully Logged In'})}
+        return c.json({token, msg:'Successfully Logged In', name: check.name})}
     
     catch{
       c.status(403)
