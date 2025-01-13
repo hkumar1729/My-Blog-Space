@@ -19,7 +19,7 @@ export default function Signup(){
 
     async function sendRequest() {
         try{
-            const response = await axios.post(`http://127.0.0.1:8787/api/v1/signin`,input,{
+            const response = await axios.post(`${BACKEND_URL}/api/v1/signin`,input,{
                 headers:{
                     'Content-Type': 'application/json',
                 }
