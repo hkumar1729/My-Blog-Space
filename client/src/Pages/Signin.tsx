@@ -25,14 +25,12 @@ export default function Signup(){
                 }
             })
 
-            if(response.data.msg === 'Successfully Logged In'){
-                const token = response.data.token
-                alert(response.data.msg)
-                localStorage.setItem("token", `Bearer ${token}`)
-                navigate('/blogs')
-            }
+            const token = response.data.token
+            alert(response.data.msg)
+            localStorage.setItem("token", `Bearer ${token}`)
+            navigate(`/blogs?name=${response.data.name}`)
         }catch(e:any){
-            alert(e.response.data.msg)
+            alert(e.response.data.error)
         }
         
     }

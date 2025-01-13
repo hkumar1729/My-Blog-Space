@@ -3,7 +3,7 @@ import {Appbar} from '../Components/Appbar'
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 
@@ -23,6 +23,8 @@ interface post {
 export default function Blogs(){
     const [post, newPost] = useState<post[]>([])
     const [loading, setLoading] = useState(true)
+    const [params] = useSearchParams()
+    const name = params.get('name')!
     const navigate = useNavigate()
     
     useEffect(()=>{
@@ -43,7 +45,7 @@ export default function Blogs(){
     if (loading) {
         return (
             <div>
-                <Appbar />
+                <Appbar name={name} />
                 <Box
                     sx={{
                         position: "fixed",
@@ -75,9 +77,9 @@ export default function Blogs(){
 
 
     return <div>
-        <Appbar/>
-        <div className="flex flex-col p-48 -mt-32">
-            <div className="-mb-6 flex">
+        <Appbar name={name}/>
+        <div className="flex flex-col p-48 -mt-32 ">
+            <div className="-mb-6 flex ">
                 <div className="text-blue-600">
                     ♦
                 </div>
@@ -89,7 +91,9 @@ export default function Blogs(){
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-300"/>
             </div>
         </div>
-        {post.map((value)=>{
+        {post.length === 0 ? <div className="flex justify-center items-center text-sm text-slate-500">
+            No post yet...
+            </div> :post.map((value)=>{
             return <BlogCard
             key={value.id}
             authorName={value.author.name} 

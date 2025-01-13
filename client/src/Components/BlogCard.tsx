@@ -14,7 +14,7 @@ export default function Blogs({
     description
 }:BlogCardProps){
     return<div className="p-48 -mt-72">
-        <div className="flex justify-start items-center">
+        <div className="flex justify-start items-center ">
             <div className="mr-3">
                 <Avatar name={authorName[0]}/>
             </div>
@@ -34,7 +34,7 @@ export default function Blogs({
         </div>
         <div className="flex justify-start items-center mt-16 font-thin"> 
             <div className="text-xs text-slate-400 font-thin">
-                {Math.ceil(description.length / 200)} min read
+                {Math.ceil(description.length / 225)} min read
             </div>
         </div>
         <hr className="h-px mt-10 -mb-8 bg-gray-200 border-0 dark:bg-gray-200"/>
