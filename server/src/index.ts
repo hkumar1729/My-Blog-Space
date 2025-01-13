@@ -18,11 +18,9 @@ const app = new Hono<{
   }
 }>()
 
-// const dburl = process.env.DATABASE_URL can't use here.
-
 app.use(cors())
 
-app.use('/api/v1/blog/*',async (c,next)=>{       //middleware for authentication
+app.use('/api/v1/blog/*',async (c,next)=>{
   try{const header = c.req.header("authorization") || ""
   const token = header.split(" ")[1]
   const verification = await verify(token, c.env.JWT_Secret) as {id:string}
@@ -43,6 +41,7 @@ app.post('/api/v1/signup',async (c)=>{
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
         try{const body = await c.req.json()
+            console.log(body)
         
           const {success} = signUpInput.safeParse(body)
             if (!success){
