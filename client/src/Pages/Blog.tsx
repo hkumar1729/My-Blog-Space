@@ -24,13 +24,10 @@ export default function Blog(){
     }
 
     async function publish() {
-        try{const response = await axios.post(`${BACKEND_URL}/api/v1/blog/post`,{
-            title: content.title,
-            content: content.content,
-            publishDate: content.publishDate,
-          },{
+        try{const response = await axios.post(`${BACKEND_URL}/api/v1/blog/post`,content,{
             headers:{
-                Authorization:localStorage.getItem('token')
+                Authorization:localStorage.getItem('token'),
+                'Content-Type': 'application/json',
             }
         })
     if(response.data.msg ==="Blog Posted successfully"){

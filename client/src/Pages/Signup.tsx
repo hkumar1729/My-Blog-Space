@@ -19,8 +19,11 @@ export default function Signup(){
 
     async function sendRequest() {
         try{
-            const response = await axios.post(`${BACKEND_URL}/api/v1/signup`,inputs)
-
+            const response = await axios.post(`${BACKEND_URL}/api/v1/signup`,inputs,{
+                headers:{
+                    'Content-Type': 'application/json',
+                }
+            })
             if(response.data.msg === 'User created successfully'){
                 const token = response.data.token
                 alert(response.data.msg)
@@ -28,7 +31,7 @@ export default function Signup(){
                 navigate('/blogs')
             }
         }catch(e:any){
-            alert(e.response.data.msg)
+            alert("Something wrong try again later...")
         }
         
     }
